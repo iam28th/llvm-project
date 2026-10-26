@@ -2823,6 +2823,11 @@ Sema::CheckBaseSpecifier(CXXRecordDecl *Class,
   if (BaseDecl->isInvalidDecl())
     Class->setInvalidDecl();
 
+  // this should fix the crash..
+  CXXRecordDecl *CXXRecordDecl = BaseType->getAsCXXRecordDecl()->getDefinition();
+  if (CXXRecordDecl->isInvalidDecl())
+    Class->setInvalidDecl();
+
   // Create the base specifier.
   return new (Context) CXXBaseSpecifier(
       SpecifierRange, Virtual, Class->getTagKind() == TagTypeKind::Class,
